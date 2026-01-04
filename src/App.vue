@@ -1,11 +1,12 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { Button } from '@/components/ui/button'
+</script>
 
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+  <div class="p-8">
+    <h1 class="text-3xl font-bold mb-4">Making Notes</h1>
+    <Button>Click me!</Button>
+    <Button variant="destructive" class="ml-2">Delete</Button>
+    <Button variant="outline" class="ml-2">Cancel</Button>
+  </div>
 </template>
-
-<style scoped></style>
