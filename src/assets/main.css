@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -113,6 +113,9 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    transition-property: background-color, border-color;
+    transition-duration: 100ms;
+    transition-timing-function: ease-in-out;
   }
   body {
     @apply bg-background text-foreground;
