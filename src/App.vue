@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import MainNav from '@/components/MainNav.vue'
 import { Button } from '@/components/ui/button'
 import {
   Select,
@@ -12,6 +13,11 @@ import {
 </script>
 
 <template>
+
+<div>
+  <MainNav />
+</div>
+
   <div class="p-8">
     <h1 class="text-3xl font-bold mb-4">Making Notes</h1>
 
