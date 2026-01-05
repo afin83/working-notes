@@ -1,0 +1,51 @@
+.theme-twilight-violet {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.15 0.02 286);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.15 0.02 286);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.15 0.02 286);
+  --primary: oklch(0.55 0.25 286);
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.96 0.01 286);
+  --secondary-foreground: oklch(0.25 0.03 286);
+  --muted: oklch(0.96 0.01 286);
+  --muted-foreground: oklch(0.55 0.015 286);
+  --accent: oklch(0.96 0.01 286);
+  --accent-foreground: oklch(0.25 0.03 286);
+  --destructive: oklch(0.6 0.25 27);
+  --border: oklch(0.92 0.01 286);
+  --input: oklch(0.92 0.01 286);
+  --ring: oklch(0.55 0.25 286);
+  --chart-1: oklch(0.65 0.22 25);
+  --chart-2: oklch(0.6 0.12 200);
+  --chart-3: oklch(0.4 0.07 230);
+  --chart-4: oklch(0.83 0.19 80);
+  --chart-5: oklch(0.77 0.19 65);
+}
+
+.theme-twilight-violet.dark {
+  --background: oklch(0.15 0.02 286);
+  --foreground: oklch(0.98 0 0);
+  --card: oklch(0.15 0.02 286);
+  --card-foreground: oklch(0.98 0 0);
+  --popover: oklch(0.15 0.02 286);
+  --popover-foreground: oklch(0.98 0 0);
+  --primary: oklch(0.65 0.27 286);
+  --primary-foreground: oklch(0.15 0.02 286);
+  --secondary: oklch(0.25 0.03 286);
+  --secondary-foreground: oklch(0.98 0 0);
+  --muted: oklch(0.25 0.03 286);
+  --muted-foreground: oklch(0.7 0.02 286);
+  --accent: oklch(0.25 0.03 286);
+  --accent-foreground: oklch(0.98 0 0);
+  --destructive: oklch(0.45 0.22 27);
+  --border: oklch(0.25 0.03 286);
+  --input: oklch(0.25 0.03 286);
+  --ring: oklch(0.55 0.25 286);
+  --chart-1: oklch(0.6 0.24 286);
+  --chart-2: oklch(0.6 0.15 170);
+  --chart-3: oklch(0.7 0.19 75);
+  --chart-4: oklch(0.65 0.26 310);
+  --chart-5: oklch(0.7 0.24 20);
+}

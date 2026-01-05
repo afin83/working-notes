@@ -25,27 +25,41 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { navigationConfig, type NavItem } from '@/config/navigation'
 
 const route = useRoute()
-const theme = ref('default')
+const theme = ref<'default' | 'blue' | 'twilight-violet'>('default')
 const mode = ref<'auto' | 'light' | 'dark'>('auto')
 const mobileMenuOpen = ref(false)
 const currentView = ref('main')
 
-// Initialize mode from localStorage or default to 'auto'
+// Initialize mode and theme from localStorage
 onMounted(() => {
   const savedMode = localStorage.getItem('color-mode') as 'auto' | 'light' | 'dark' | null
   if (savedMode && ['auto', 'light', 'dark'].includes(savedMode)) {
     mode.value = savedMode
   }
+
+  const savedTheme = localStorage.getItem('color-theme') as 'default' | 'blue' | 'twilight-violet' | null
+  if (savedTheme && ['default', 'blue', 'twilight-violet'].includes(savedTheme)) {
+    theme.value = savedTheme
+  }
+
   applyMode(mode.value)
+  applyTheme(theme.value)
 })
 
 // Watch for mode changes and apply them
 watch(mode, (newMode) => {
   localStorage.setItem('color-mode', newMode)
   applyMode(newMode)
+})
+
+// Watch for theme changes and apply them
+watch(theme, (newTheme) => {
+  localStorage.setItem('color-theme', newTheme)
+  applyTheme(newTheme)
 })
 
 // Apply the selected mode to the document
@@ -68,6 +82,21 @@ const applyMode = (selectedMode: 'auto' | 'light' | 'dark') => {
   } else {
     root.classList.remove('dark')
     root.classList.add('light')
+  }
+}
+
+// Apply the selected theme to the document
+const applyTheme = (selectedTheme: 'default' | 'blue' | 'twilight-violet') => {
+  const root = document.documentElement
+
+  // Remove all theme classes
+  root.classList.remove('theme-blue', 'theme-twilight-violet')
+
+  // Add the selected theme class (default has no class)
+  if (selectedTheme === 'blue') {
+    root.classList.add('theme-blue')
+  } else if (selectedTheme === 'twilight-violet') {
+    root.classList.add('theme-twilight-violet')
   }
 }
 
@@ -172,23 +201,26 @@ const currentSubmenuItems = computed(() => {
         <!-- Theme and Mode Selectors -->
         <div class="flex items-center gap-3">
           <!-- Theme Selector with prepend label -->
-          <div class="flex items-center gap-2 border rounded-md px-3 h-9 bg-background">
-            <span class="text-sm text-muted-foreground whitespace-nowrap hidden lg:inline"
-              >Theme:</span
-            >
-            <Select v-model="theme">
-              <SelectTrigger class="border-0 shadow-none h-auto p-0 focus:ring-0 w-[110px]">
-                <SelectValue placeholder="Theme" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Themes</SelectLabel>
-                  <SelectItem value="default">Default</SelectItem>
-                  <SelectItem value="blue">Blue</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
+          <Select v-model="theme">
+            <SelectTrigger class="h-9 px-3 w-auto">
+              <div class="flex items-center gap-2">
+                <span class="text-sm text-muted-foreground whitespace-nowrap hidden lg:inline"
+                  >Theme:</span
+                >
+                <div class="w-24 overflow-hidden text-ellipsis whitespace-nowrap text-left">
+                  <SelectValue placeholder="Theme" />
+                </div>
+              </div>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Themes</SelectLabel>
+                <SelectItem value="default">Default</SelectItem>
+                <SelectItem value="blue">Blue</SelectItem>
+                <SelectItem value="twilight-violet">Twilight Violet Mystique</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
 
           <!-- Mode Selector -->
           <Select v-model="mode">
@@ -199,6 +231,7 @@ const currentSubmenuItems = computed(() => {
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
+                <SelectLabel>Modes</SelectLabel>
                 <SelectItem value="auto">
                   <div class="flex items-center gap-2">
                     <Contrast class="h-4 w-4" />
@@ -273,6 +306,25 @@ const currentSubmenuItems = computed(() => {
                     <ChevronRight class="h-5 w-5" />
                   </button>
                 </template>
+
+                <!-- Mode Toggle Group -->
+                <div class="mt-6 pt-6 border-t">
+                  <div class="text-sm text-muted-foreground mb-3">Appearance</div>
+                  <ToggleGroup v-model="mode" type="single" class="justify-start">
+                    <ToggleGroupItem value="auto" aria-label="Auto mode" class="flex-1">
+                      <Contrast class="h-4 w-4 mr-2" />
+                      Auto
+                    </ToggleGroupItem>
+                    <ToggleGroupItem value="light" aria-label="Light mode" class="flex-1">
+                      <Sun class="h-4 w-4 mr-2" />
+                      Light
+                    </ToggleGroupItem>
+                    <ToggleGroupItem value="dark" aria-label="Dark mode" class="flex-1">
+                      <Moon class="h-4 w-4 mr-2" />
+                      Dark
+                    </ToggleGroupItem>
+                  </ToggleGroup>
+                </div>
               </div>
             </Transition>
 
