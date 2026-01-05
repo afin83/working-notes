@@ -1,0 +1,38 @@
+/* Mobile Drawer - Match desktop dropdown styling */
+.responsive-select-drawer-options {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  padding: 0.25rem;
+}
+
+.responsive-select-drawer-option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 48px;
+  padding: 0.375rem 0.5rem;
+  padding-left: 2rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: background-color 100ms ease-in-out, color 100ms ease-in-out;
+  user-select: none;
+}
+
+.responsive-select-drawer-option:hover {
+  background-color: hsl(var(--accent)) !important;
+  color: hsl(var(--accent-foreground)) !important;
+}
+
+.responsive-select-drawer-option-selected {
+  background-color: hsl(var(--accent)) !important;
+  color: hsl(var(--accent-foreground)) !important;
+}
+
+.responsive-select-drawer-option svg {
+  position: absolute;
+  left: 0.5rem;
+  flex-shrink: 0;
+}

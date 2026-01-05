@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
-import { Contrast, Sun, Moon, Menu, ChevronRight, ChevronLeft, ChevronDown } from 'lucide-vue-next'
+import { Contrast, Sun, Moon, Menu, ChevronRight, ChevronLeft, ChevronDown, X } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -24,8 +24,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { DialogClose } from 'reka-ui'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { ResponsiveSelect } from '@/components/ui/responsive-select'
 import { navigationConfig, type NavItem } from '@/config/navigation'
 
 const route = useRoute()
@@ -266,12 +268,16 @@ const currentSubmenuItems = computed(() => {
           </Button>
         </SheetTrigger>
 
-        <SheetContent side="right" class="w-[300px] sm:w-[400px] overflow-hidden">
-          <SheetHeader>
-            <SheetTitle>Navigation</SheetTitle>
-          </SheetHeader>
+        <SheetContent side="right" class="w-[300px] sm:w-[400px] overflow-hidden" hide-close>
+          <!-- Custom header with close button -->
+          <div class="flex items-center justify-end p-3">
+            <DialogClose class="ring-offset-background focus:ring-ring data-[state=open]:bg-secondary w-11 h-10 flex items-center justify-center rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none">
+              <X class="size-6" />
+              <span class="sr-only">Close</span>
+            </DialogClose>
+          </div>
 
-          <div class="relative mt-8 h-full">
+          <div class="relative h-full">
             <!-- Main View -->
             <Transition
               enter-active-class="transition-transform duration-300 ease-out absolute top-0 left-0 w-full"
@@ -281,49 +287,82 @@ const currentSubmenuItems = computed(() => {
               leave-from-class="translate-x-0"
               leave-to-class="-translate-x-full"
             >
-              <div v-if="currentView === 'main'" class="flex flex-col gap-4">
-                <template v-for="item in navigationConfig" :key="item.label">
-                  <!-- Simple link (no children) -->
-                  <RouterLink
-                    v-if="!item.children"
-                    :to="item.to!"
-                    :class="[
-                      'text-lg py-2',
-                      isActiveNavItem(item) ? 'font-bold text-primary' : 'font-medium',
-                    ]"
-                    @click="mobileMenuOpen = false"
-                  >
-                    {{ item.label }}
-                  </RouterLink>
+              <div v-if="currentView === 'main'">
+                <!-- Navigation Items -->
+                <div class="flex flex-col gap-1 px-2">
+                  <template v-for="item in navigationConfig" :key="item.label">
+                    <!-- Simple link (no children) -->
+                    <RouterLink
+                      v-if="!item.children"
+                      :to="item.to!"
+                      :class="[
+                        'text-lg h-12 flex items-center rounded-md px-4 font-medium',
+                        isActiveNavItem(item) ? 'bg-accent text-accent-foreground' : '',
+                      ]"
+                      @click="mobileMenuOpen = false"
+                    >
+                      {{ item.label }}
+                    </RouterLink>
 
-                  <!-- Link with children - navigate to submenu -->
-                  <button
-                    v-else
-                    @click="navigateTo(item.label.toLowerCase())"
-                    class="flex items-center justify-between text-lg font-medium py-2 text-left"
-                  >
-                    <span>{{ item.label }}</span>
-                    <ChevronRight class="h-5 w-5" />
-                  </button>
-                </template>
+                    <!-- Link with children - navigate to submenu -->
+                    <button
+                      v-else
+                      @click="navigateTo(item.label.toLowerCase())"
+                      :class="[
+                        'flex items-center justify-between text-lg h-12 text-left rounded-md px-4 font-medium',
+                        isActiveNavItem(item) ? 'bg-accent text-accent-foreground' : '',
+                      ]"
+                    >
+                      <span>{{ item.label }}</span>
+                      <ChevronRight class="h-5 w-5" />
+                    </button>
+                  </template>
+                </div>
 
-                <!-- Mode Toggle Group -->
-                <div class="mt-6 pt-6 border-t">
+                <!-- Appearance Settings -->
+                <div class="mt-6 pt-6 border-t px-6">
                   <div class="text-sm text-muted-foreground mb-3">Appearance</div>
-                  <ToggleGroup v-model="mode" type="single" class="justify-start">
-                    <ToggleGroupItem value="auto" aria-label="Auto mode" class="flex-1">
-                      <Contrast class="h-4 w-4 mr-2" />
-                      Auto
-                    </ToggleGroupItem>
-                    <ToggleGroupItem value="light" aria-label="Light mode" class="flex-1">
-                      <Sun class="h-4 w-4 mr-2" />
-                      Light
-                    </ToggleGroupItem>
-                    <ToggleGroupItem value="dark" aria-label="Dark mode" class="flex-1">
-                      <Moon class="h-4 w-4 mr-2" />
-                      Dark
-                    </ToggleGroupItem>
-                  </ToggleGroup>
+
+                  <!-- Theme Selector -->
+                  <div class="mb-4">
+                    <label class="text-sm font-medium mb-2 block">Theme</label>
+                    <ResponsiveSelect
+                      v-model="theme"
+                      placeholder="Select theme"
+                      label="Choose a theme"
+                      :options="[
+                        { value: 'default', label: 'Default' },
+                        { value: 'blue', label: 'Blue' },
+                        { value: 'twilight-violet', label: 'Twilight Violet Mystique' },
+                      ]"
+                    >
+                      <SelectGroup>
+                        <SelectLabel>Themes</SelectLabel>
+                        <SelectItem value="default">Default</SelectItem>
+                        <SelectItem value="blue">Blue</SelectItem>
+                        <SelectItem value="twilight-violet">Twilight Violet Mystique</SelectItem>
+                      </SelectGroup>
+                    </ResponsiveSelect>
+                  </div>
+
+                  <!-- Mode Toggle Group -->
+                  <div>
+                    <label class="text-sm font-medium mb-2 block">Mode</label>
+                    <ToggleGroup v-model="mode" type="single" variant="outline" class="w-full">
+                      <ToggleGroupItem value="auto" aria-label="Auto mode" class="flex-1 font-normal gap-0">
+                        <Contrast class="h-4 w-4 mr-2 -ml-1" />
+                        Auto
+                      </ToggleGroupItem>
+                      <ToggleGroupItem value="light" aria-label="Light mode" class="flex-1 font-normal gap-0">
+                        <Sun class="h-4 w-4 mr-2 -ml-1" />
+                        Light
+                      </ToggleGroupItem>
+                      <ToggleGroupItem value="dark" aria-label="Dark mode" class="flex-1 font-normal gap-0">
+                        <Moon class="h-4 w-4 mr-2 -ml-1" />
+                        Dark
+                      </ToggleGroupItem>
+                    </ToggleGroup>
+                  </div>
                 </div>
               </div>
             </Transition>
@@ -337,10 +376,10 @@ const currentSubmenuItems = computed(() => {
               leave-from-class="translate-x-0"
               leave-to-class="translate-x-full"
             >
-              <div v-if="currentView !== 'main' && currentSubmenuItems.length > 0" class="flex flex-col gap-4">
+              <div v-if="currentView !== 'main' && currentSubmenuItems.length > 0" class="flex flex-col gap-1 px-2">
                 <button
                   @click="goBack"
-                  class="flex items-center gap-2 text-lg font-medium py-2 mb-4"
+                  class="flex items-center gap-2 text-lg font-medium h-12 mb-4"
                 >
                   <ChevronLeft class="h-5 w-5" />
                   <span>Back</span>
@@ -350,7 +389,10 @@ const currentSubmenuItems = computed(() => {
                   v-for="child in currentSubmenuItems"
                   :key="child.to"
                   :to="child.to"
-                  class="text-lg py-2"
+                  :class="[
+                    'text-lg h-12 flex items-center rounded-md px-4 font-medium',
+                    route.path === child.to ? 'bg-accent text-accent-foreground' : '',
+                  ]"
                   @click="mobileMenuOpen = false"
                 >
                   {{ child.label }}
