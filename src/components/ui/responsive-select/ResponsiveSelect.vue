@@ -54,7 +54,7 @@ const handleSelect = (value: string) => {
     <SheetTrigger as-child>
       <Button
         variant="outline"
-        class="w-full justify-between font-normal"
+        class="w-full justify-between font-normal h-12"
         :aria-label="`${label || 'Select an option'}. Current selection: ${selectedOption?.label || 'None'}`"
       >
         <span>{{ selectedOption?.label || placeholder }}</span>

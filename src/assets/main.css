@@ -1,8 +1,19 @@
+/* Tailwind CSS v4 - Core utility framework */
 @import 'tailwindcss';
+
+/* Animation utilities - Provides CSS animation classes */
 @import 'tw-animate-css';
-@import './themes/default.css';
-@import './themes/blue.css';
-@import './themes/twilight-violet.css';
+
+/* Typography plugin - Beautiful typographic defaults for prose content */
+@plugin '@tailwindcss/typography';
+
+/* Theme definitions - Color schemes and design tokens */
+@import './themes/default.css';    /* Default neutral theme */
+@import './themes/blue.css';       /* Blue accent theme */
+@import './themes/twilight-violet.css';  /* Twilight violet theme */
+
+/* Typography customization - Integrates prose with shadcn theming */
+@import './typography.css';
 
 @custom-variant dark (&:is(.dark *));
 

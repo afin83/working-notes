@@ -24,6 +24,21 @@ const router = createRouter({
       name: 'contact',
       component: () => import('../views/ContactView.vue'),
     },
+    {
+      path: '/about/portfolio',
+      name: 'portfolio',
+      component: () => import('../views/PortfolioView.vue'),
+    },
+    {
+      path: '/about/form-components',
+      name: 'form-components',
+      component: () => import('../views/FormComponentsView.vue'),
+    },
+    {
+      path: '/about/typography',
+      name: 'typography',
+      component: () => import('../views/TypographyView.vue'),
+    },
   ],
 })
 
